@@ -1,1 +1,42 @@
-/* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+@import './styles/variables.scss';
+
+* {
+  box-sizing: border-box;
+  line-height: normal;
+}
+
+html, body {
+  font-family: 'Roboto', sans-serif;
+  font-size: 14px;
+  background: #F4F4F4;
+
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+p,
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+  padding: 0;
+}
+
+input {
+  padding: 1rem;
+  outline: none;
+  border-radius: 0;
+  border: 1px var(--primary-color) solid;
+}
+
+button {
+  background: white;
+  border: 1px var(--primary-color) solid;
+  padding: 1rem;
+  cursor: pointer;
+  font-size: 14px;
+
+  &[disabled] {
+    cursor: not-allowed;
+  }
+}

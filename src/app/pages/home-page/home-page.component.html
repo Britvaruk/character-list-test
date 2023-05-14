@@ -1,0 +1,86 @@
+<main class="page-wrapper">
+  <h2>Список персонажей</h2>
+  <div class="search">
+    <input 
+      class="search__input" 
+      type="search" 
+      placeholder="Введите имя персонажа"
+      minlength="3"
+      (input)="onSearch($event)"
+    >
+  </div>
+  <div class="table">
+    <div class="table__settings">
+      <h3>Найдено: {{ total }}</h3>
+      <div class="button-block">
+        <button 
+          class="button-block__btn" 
+          [class.active]="dynamicLoading"
+          (click)="changeLoading(true)"
+        >
+          Динамическая прокрутка
+        </button>
+        <button 
+          class="button-block__btn" 
+          [class.active]="!dynamicLoading" 
+          (click)="changeLoading(false)"
+        >
+          Постраничное переключение
+        </button>
+      </div>
+    </div>
+
+    <div 
+      id="character-table"
+      class="table__content"     
+      [class.scrollable]="dynamicLoading"
+    >
+      <table>
+        <thead>
+          <tr>
+            <th>Номер</th>
+            <th>Имя</th>
+            <th>Год рождения</th>
+            <th>Вес</th>
+            <th>Рост</th>
+          </tr>
+        </thead>
+        <tbody *ngIf="(characterList$ | async) as data"> 
+          <ng-container *ngIf="data.length; else noData">
+            <tr *ngFor="let item of data; index as i">
+              <ng-container *ngIf="dynamicLoading; else pageableNumber">
+                <td>{{ i + 1 }}</td>
+              </ng-container>
+              <ng-template #pageableNumber>
+                <td>{{ page*10 - 10 + i + 1 }}</td>
+              </ng-template>
+              
+              <td>{{ item.name }}</td>
+              <td>{{ item.birth_year }}</td>
+              <td>{{ item.mass }}</td>
+              <td>{{ item.height }}</td>
+            </tr>
+          </ng-container>
+          <ng-template #noData>
+            <div class="empty-block">Нет результатов</div>
+          </ng-template>
+        </tbody>        
+      </table>
+      <div class="loader" *ngIf="isLoading">
+        <img src="assets/icons/load.svg" width="100">
+      </div>
+    </div>
+
+    <div class="table__pagination" *ngIf="!dynamicLoading">
+      <button 
+        (click)="previousPage()"
+        [disabled]="page <= 1"
+      ><</button>
+      <div class="page-number">{{ page }}</div>
+      <button 
+        (click)="nextPage()"
+        [disabled]="total/page <= 10"
+      >></button>
+    </div>
+  </div>
+</main>
